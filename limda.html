@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sayro para Yasmin</title>
+    <style>
+        body {
+            background-color: #ffcccc; /* Cor de fundo sexy */
+            text-align: center;
+        }
+        .fire-window {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            border: 2px solid #ff1a1a; /* Cor do contorno da janela */
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .fire-btn {
+            margin-top: 20px;
+            cursor: pointer;
+            padding: 10px 20px;
+            background-color: #ff1a1a; /* Cor do botão */
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+        }
+        .sexy-text {
+            font-family: "Arial", sans-serif;
+            font-size: 24px;
+            color: #ff1a1a; /* Cor do texto "dlssssssssss🔥" */
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="fire-window">
+        <h2>Sayro para Yasmin</h2>
+        <p>🔥🔥🔥???<p>
+        <button class="fire-btn" onclick="checkResponse('sim')">Sim</button>
+        <button class="fire-btn" onclick="checkResponse('nao')">Não</button>
+    </div>
+
+    <script>
+        function checkResponse(response) {
+            if (response === 'sim') {
+                // Janela nova para resposta "Sim"
+                const newWindow = window.open('', '_blank');
+                newWindow.document.write('<body style="background-color: #ffcccc; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0;"><h1 class="sexy-text">dlssssssssss🔥</h1></body>');
+            } else if (response === 'nao') {
+                // Mover a janela atual para um canto aleatório do site
+                const windowWidth = window.innerWidth;
+                const windowHeight = window.innerHeight;
+                const randomX = Math.floor(Math.random() * (windowWidth - 200)); // 200 é a largura da janela
+                const randomY = Math.floor(Math.random() * (windowHeight - 200)); // 200 é a altura da janela
+                document.querySelector('.fire-window').style.left = `${randomX}px`;
+                document.querySelector('.fire-window').style.top = `${randomY}px`;
+            }
+        }
+    </script>
+</body>
+</html>
