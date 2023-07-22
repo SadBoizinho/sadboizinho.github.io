@@ -69,11 +69,11 @@
     <button onclick="selectPlayer(2)">2 Players</button>
   </div>
 
-  <div id="difficultyMenu">
+  <div id="difficultyMenu" style="display: none;">
     <h1>Choose Difficulty</h1>
-    <button onclick="startGame(1, 2)">Easy</button>
-    <button onclick="startGame(1, 3)">Medium</button>
-    <button onclick="startGame(1, 4)">Hard</button>
+    <button onclick="startGame(1, 4)">Easy</button>
+    <button onclick="startGame(1, 6)">Medium</button>
+    <button onclick="startGame(1, 8)">Hard</button>
   </div>
 
   <canvas id="gameCanvas" width="800" height="500"></canvas>
@@ -203,11 +203,9 @@
         ballY < player1Y + paddleHeight
       ) {
         ballSpeedX = ballSpeed;
-        if (ballY <= player1Y + paddleHeight / 2) {
-          ballSpeedY = -Math.abs(ballSpeedY);
-        } else {
-          ballSpeedY = Math.abs(ballSpeedY);
-        }
+        // Adjust vertical speed based on where the ball hit the paddle
+        const deltaY = ballY - (player1Y + paddleHeight / 2);
+        ballSpeedY = deltaY * 0.3;
         playPingSound();
       }
 
@@ -217,11 +215,9 @@
         ballY < player2Y + paddleHeight
       ) {
         ballSpeedX = -ballSpeed;
-        if (ballY <= player2Y + paddleHeight / 2) {
-          ballSpeedY = -Math.abs(ballSpeedY);
-        } else {
-          ballSpeedY = Math.abs(ballSpeedY);
-        }
+        // Adjust vertical speed based on where the ball hit the paddle
+        const deltaY = ballY - (player2Y + paddleHeight / 2);
+        ballSpeedY = deltaY * 0.3;
         playPingSound();
       }
 
@@ -271,9 +267,12 @@
       const menu = document.getElementById('menu');
       menu.style.display = 'flex';
 
-      // Hide game canvas and difficulty menu
-      canvas.style.display = 'none';
+      // Hide difficulty menu
+      const difficultyMenu = document.getElementById('difficultyMenu');
       difficultyMenu.style.display = 'none';
+
+      // Hide game canvas
+      canvas.style.display = 'none';
     }
 
     let keys = {};
@@ -292,48 +291,44 @@
       const menu = document.getElementById('menu');
       menu.style.display = 'none';
 
-      // Show difficulty menu for single player mode
+      // Show difficulty menu for 1 player mode
       if (playerCount === 1) {
-        isOnePlayer = true;
-        isTwoPlayers = false;
         const difficultyMenu = document.getElementById('difficultyMenu');
         difficultyMenu.style.display = 'flex';
+        isOnePlayer = true;
+        isTwoPlayers = false;
+        isDifficult = false;
+        isMedium = false;
       } else if (playerCount === 2) {
-        // Start the game directly for two players mode
-        isOnePlayer = false;
-        isTwoPlayers = true;
-        startGame(2, 0);
+        // For 2 player mode, directly start the game
+        startGame(2);
       }
     }
 
-    function startGame(playerCount, difficulty) {
+    function startGame(playerCount, difficulty = 2) {
       // Hide difficulty menu
       const difficultyMenu = document.getElementById('difficultyMenu');
       difficultyMenu.style.display = 'none';
 
-      // Set the difficulty for one player mode
+      // Set player count
       if (playerCount === 1) {
-        if (difficulty === 2) {
-          player2Speed = 3;
-        } else if (difficulty === 3) {
-          player2Speed = 4.5;
-        } else if (difficulty === 4) {
-          player2Speed = 6;
-        }
+        isOnePlayer = true;
+        isTwoPlayers = false;
+        isDifficult = true;
+        isMedium = difficulty === 6;
+        player2Speed = difficulty;
+      } else if (playerCount === 2) {
+        isOnePlayer = false;
+        isTwoPlayers = true;
+        isDifficult = false;
+        isMedium = false;
       }
 
       // Show game canvas
       canvas.style.display = 'block';
 
-      // Reset game state
-      player1Score = 0;
-      player2Score = 0;
-      player1Y = canvas.height / 2 - paddleHeight / 2;
-      player2Y = canvas.height / 2 - paddleHeight / 2;
-      isGameRunning = true;
-      isGameOver = false;
-
       // Start game loop
+      isGameRunning = true;
       gameLoop();
     }
 
