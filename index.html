@@ -49,6 +49,23 @@
       cursor: pointer;
     }
 
+    #mobileControls {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      top: 50%;
+      left: 20px;
+      transform: translateY(-50%);
+    }
+
+    #mobileControls button {
+      font-size: 24px;
+      width: 80px;
+      height: 80px;
+      margin: 5px;
+      cursor: pointer;
+    }
+
     canvas {
       display: none;
       border: 2px solid #000;
@@ -77,6 +94,11 @@
   </div>
 
   <canvas id="gameCanvas" width="800" height="500"></canvas>
+
+  <div id="mobileControls">
+    <button id="upButton" ontouchstart="movePlayer1Up()" ontouchend="stopMovePlayer1()">UP</button>
+    <button id="downButton" ontouchstart="movePlayer1Down()" ontouchend="stopMovePlayer1()">DOWN</button>
+  </div>
 
   <script>
     const canvas = document.getElementById('gameCanvas');
@@ -166,6 +188,19 @@
       if (keys.s && player1Y < canvas.height - paddleHeight) {
         player1Y += paddleSpeed;
       }
+    }
+
+    function movePlayer1Up() {
+      keys.w = true;
+    }
+
+    function movePlayer1Down() {
+      keys.s = true;
+    }
+
+    function stopMovePlayer1() {
+      keys.w = false;
+      keys.s = false;
     }
 
     function movePlayer2() {
@@ -326,6 +361,9 @@
 
       // Show game canvas
       canvas.style.display = 'block';
+      // Show mobile controls
+      const mobileControls = document.getElementById('mobileControls');
+      mobileControls.style.display = 'flex';
 
       // Start game loop
       isGameRunning = true;
